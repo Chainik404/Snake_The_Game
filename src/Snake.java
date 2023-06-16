@@ -4,7 +4,7 @@ import java.util.ArrayList;
 public class Snake{ //implements IMoveAble {
     ArrayList<Cell> body = new ArrayList<>(3);
     Direction direction = Direction.UP;
-    Cell apple = new Cell(10,10,CellType.Aple);
+    Cell apple = new Cell(10,10,CellType.Apple);
     public Snake(){
         int headRow = Settings.ROWS-4;
         int headCol = Settings.COLS/2;
@@ -17,7 +17,7 @@ public class Snake{ //implements IMoveAble {
     public boolean move() {
         int len1 = this.body.size();
 
-        boolean isAple = this.apple.same(this.body.get(0)); // len1 - 1
+        boolean isApple = this.apple.same(this.body.get(0)); // len1 - 1
 
         for (int i = 0; i < len1 - 1; i++) {
             Cell cell_d = this.body.get(len1 - 1 - i);
@@ -46,7 +46,7 @@ public class Snake{ //implements IMoveAble {
         if (checkColision()){
             return false;
         }
-        if (isAple) {
+        if (isApple) {
             Cell c_new = new Cell(this.apple.row, this.apple.col,CellType.Snake);
             this.body.add(c_new);
             boolean ff = this.findNewApple();

@@ -1,5 +1,5 @@
 public enum CellOnMap {
-    DEFOULT,
+    DEFAULT,
     SNAKE,
     APLE
 

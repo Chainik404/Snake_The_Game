@@ -2,7 +2,7 @@ import java.awt.*;
 
 enum CellType{
     Snake,
-    Aple,
+    Apple,
 
 }
 
@@ -16,7 +16,7 @@ public class Cell implements IDrawable {
         this.row = row;
         this.type = type;
         switch (this.type){
-            case Aple -> {color = Settings.AppleColor;}
+            case Apple -> {color = Settings.AppleColor;}
             case Snake -> {color = Settings.SnakeColor;}
         }
     }
