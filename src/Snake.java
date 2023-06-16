@@ -1,3 +1,4 @@
+import java.util.List;
 import java.util.ArrayList;
 
 public class Snake{ //implements IMoveAble {
@@ -88,4 +89,25 @@ public class Snake{ //implements IMoveAble {
         }
         return false;
     }
+
+    //#region OnChanged listeners routines
+    private List<OnChangedEventListener> onChangedListeners = new ArrayList<>();
+
+    // Method to subscribe to event
+    public void addOnChangeListener(OnChangedEventListener listener) {
+        onChangedListeners.add(listener);
+    }
+
+    // Method to unsubscribe from event
+    public void delOnChangeListener(OnChangedEventListener listener) {
+        onChangedListeners.remove(listener);
+    }
+
+    // Method to fire event
+    public void OnChangedData() {
+        for (var listener : onChangedListeners) {
+            listener.onChanged(this);
+        }
+    }
+    //#endregion
 }
