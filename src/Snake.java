@@ -91,22 +91,28 @@ public class Snake{ //implements IMoveAble {
     }
 
     //#region OnChanged listeners routines
-    private List<OnChangedEventListener> onChangedListeners = new ArrayList<>();
+    private List<SnakeEventsListener> snakesListeners = new ArrayList<>();
 
     // Method to subscribe to event
-    public void addOnChangeListener(OnChangedEventListener listener) {
-        onChangedListeners.add(listener);
+    public void addOnChangeListener(SnakeEventsListener listener) {
+        snakesListeners.add(listener);
     }
 
     // Method to unsubscribe from event
-    public void delOnChangeListener(OnChangedEventListener listener) {
-        onChangedListeners.remove(listener);
+    public void delOnChangeListener(SnakeEventsListener listener) {
+        snakesListeners.remove(listener);
     }
 
     // Method to fire event
-    public void OnChangedData() {
-        for (var listener : onChangedListeners) {
+    private void OnChangedData() {
+        for (var listener : snakesListeners) {
             listener.onChanged(this);
+        }
+    }
+
+    private void OnAppleAdded(){
+        for (var listener : snakesListeners) {
+            listener.onNewApple(this);
         }
     }
     //#endregion
