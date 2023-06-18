@@ -84,7 +84,7 @@ public class DataContext implements SnakeEventsListener,UserEventListener {
             var folder =Main.class.getProtectionDomain().getCodeSource().getLocation().getPath();
             var filePath = folder + "data.bin";
             FileOutputStream fos = new FileOutputStream(filePath);
-            for (int i = 0; i < 10; i++) {
+            for (int i = 0; i < (players.size()>10? 9:players.size()); i++) {
                 players.get(i).save(fos);
             }
         } catch (FileNotFoundException e) {
