@@ -81,8 +81,8 @@ public class DataContext implements SnakeEventsListener,UserEventListener {
 
         try {
             FileOutputStream fos = new FileOutputStream("C:\\PJATK\\sem_2\\GUI\\Snake\\data.bin");
-            for (Player p : this.players) {
-                p.save(fos);
+            for (int i = 0; i < 10; i++) {
+                players.get(i).save(fos);
             }
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
