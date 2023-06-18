@@ -84,10 +84,6 @@ public class Frame extends JFrame implements UserEventListener{
         this.gridPanel.Focus();
     }
 
-    public void focusMenu(){
-
-    }
-
 
 
     public void updateGrid(DataContext dataContext){

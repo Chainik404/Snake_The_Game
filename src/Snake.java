@@ -4,6 +4,7 @@ import java.util.ArrayList;
 public class Snake{ //implements IMoveAble {
     ArrayList<Cell> body = new ArrayList<>(3);
     UserAction direction = UserAction.UP;
+    UserAction opositeDirection = UserAction.Down;
     Cell apple = new Cell(10,10,CellType.Apple);
     public Snake(){
         int headRow = Settings.ROWS-4;
@@ -108,6 +109,10 @@ public class Snake{ //implements IMoveAble {
             }
         }
         return false;
+    }
+
+    public UserAction getOpositeDirection() {
+        return opositeDirection;
     }
 
     //#region OnChanged listeners routines

@@ -16,6 +16,9 @@ public class DataContext implements SnakeEventsListener,UserEventListener {
     private Player curentPlayer;
     private int currentScore = 0;
 
+    public UserAction getSnakeOpositeDirection(){
+        return this.Snake.getOpositeDirection();
+    }
 
     public void setGame(boolean game) {
         isGame = game;

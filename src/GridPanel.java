@@ -45,7 +45,9 @@ public class GridPanel extends JPanel {
                 }
 //                OnUserAction();
                 synchronized (dataContext){
-                    dataContext.addMoveDirection(userAction);
+                    if (userAction != dataContext.getSnakeOpositeDirection()){
+                        dataContext.addMoveDirection(userAction);
+                    }
                 }
             }
         });
