@@ -1,3 +1,4 @@
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -80,7 +81,9 @@ public class DataContext implements SnakeEventsListener,UserEventListener {
         Collections.sort(this.players);
 
         try {
-            FileOutputStream fos = new FileOutputStream("C:\\PJATK\\sem_2\\GUI\\Snake\\data.bin");
+            var folder =Main.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+            var filePath = folder + "data.bin";
+            FileOutputStream fos = new FileOutputStream(filePath);
             for (int i = 0; i < 10; i++) {
                 players.get(i).save(fos);
             }
@@ -91,12 +94,16 @@ public class DataContext implements SnakeEventsListener,UserEventListener {
     }
     private void loadPlayers(){
         try {
-            FileInputStream fis  = new FileInputStream("C:\\PJATK\\sem_2\\GUI\\Snake\\data.bin");
-            while (fis.available()>0){
-                var player = Player.load(fis);
-                this.players.add(player);
+            var folder =Main.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+            var filePath = folder + "data.bin";
+            File file = new File(filePath);        
+            if (file.exists()) {
+                FileInputStream fis  = new FileInputStream(filePath);
+                while (fis.available()>0){
+                    var player = Player.load(fis);
+                    this.players.add(player);
+                }
             }
-
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
