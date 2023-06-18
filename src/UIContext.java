@@ -57,9 +57,8 @@ public class UIContext implements SnakeEventsListener, UserEventListener{
 
     @Override
     public void onSnakeBlock(Object sender) {
+        frame.showMenu();
         updateGrid();
-
-
     }
 
     @Override
@@ -111,8 +110,8 @@ public class UIContext implements SnakeEventsListener, UserEventListener{
 
     @Override
     public void onGameStart() {
-        OnGameStarted();
         this.frame.focusGame();
+        OnGameStarted();
     }
 
     @Override

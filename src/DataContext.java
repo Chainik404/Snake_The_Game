@@ -1,7 +1,8 @@
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.*;
 
 public class DataContext implements SnakeEventsListener,UserEventListener {
     Snake Snake;
@@ -10,6 +11,10 @@ public class DataContext implements SnakeEventsListener,UserEventListener {
     public boolean Exit;
     private boolean isChanged;
     private boolean isGame;
+    private List<Player> players = new ArrayList<>();
+    private Player curentPlayer;
+    private int currentScore = 0;
+
 
     public void setGame(boolean game) {
         isGame = game;
@@ -19,13 +24,12 @@ public class DataContext implements SnakeEventsListener,UserEventListener {
         return isGame;
     }
 
-    private ArrayList<Player> players = new ArrayList<>();
-
 
     public DataContext(){
         UserActions = new LinkedList<>();
         this.Snake = new Snake();
         this.Map = new Map();
+        loadPlayers();
     }
 
     public boolean snakeMove(){
@@ -65,11 +69,42 @@ public class DataContext implements SnakeEventsListener,UserEventListener {
     }
 
     public void addPlayer(String name){
-        this.players.add(new Player(players.size(),name));
+        Player p = new Player(name);
+        this.players.add(p);
+        this.curentPlayer = p;
     }
     public void removePlayer(Player player){
         this.players.remove(player);
     }
+    public void savePlayers(){
+        Collections.sort(this.players);
+
+        try {
+            FileOutputStream fos = new FileOutputStream("C:\\PJATK\\sem_2\\GUI\\Snake\\data.bin");
+            for (Player p : this.players) {
+                p.save(fos);
+            }
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+    private void loadPlayers(){
+        try {
+            FileInputStream fis  = new FileInputStream("C:\\PJATK\\sem_2\\GUI\\Snake\\data.bin");
+            while (fis.available()>0){
+                var player = Player.load(fis);
+                this.players.add(player);
+            }
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        for (Player p : players) {
+            System.out.println(p);
+        }
+    }
+
 
 
     private List<SnakeEventsListener> snakesListeners = new ArrayList<>();
@@ -114,6 +149,11 @@ public class DataContext implements SnakeEventsListener,UserEventListener {
             listener.onMove(this);
         }
     }
+    private void OnSnakeBlock(){
+        for (var listener : snakesListeners) {
+            listener.onSnakeBlock(this);
+        }
+    }
 
     @Override
     public void onChanged(Object sender) {
@@ -135,14 +175,18 @@ public class DataContext implements SnakeEventsListener,UserEventListener {
     @Override
     public void onSnakeBlock(Object sender) {
         System.out.println("DEAD!!!");
+        this.isGame = false;
+        curentPlayer.setBestScore(currentScore);
+        OnSnakeBlock();
+
         updateMap();
 
     }
 
     @Override
     public void onSnakeGrow(Object sender) {
-        System.out.println("growed");
-
+        System.out.println("snake growth");
+        currentScore++;
         updateMap();
     }
 
@@ -170,6 +214,10 @@ public class DataContext implements SnakeEventsListener,UserEventListener {
     @Override
     public void onGameStart() {
         this.isGame = true;
+        this.currentScore = 0;
+        this.Snake.reset();
+        this.curentPlayer = players.get(players.size());
+
     }
 
     @Override
@@ -179,11 +227,11 @@ public class DataContext implements SnakeEventsListener,UserEventListener {
 
     @Override
     public void onGameResume() {
-        this.isGame =false;
+        this.isGame =true;
     }
 
     @Override
     public void onGameEnd() {
-
+        this.isGame = false;
     }
 }

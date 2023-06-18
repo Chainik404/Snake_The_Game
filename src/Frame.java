@@ -2,6 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +17,13 @@ public class Frame extends JFrame implements UserEventListener{
         setPreferredSize(new Dimension(Settings.FrameWidth,Settings.FrameHeight));
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                super.windowClosing(e);
+                DataContext.savePlayers();
+            }
+        });
 
         setTitle("Snake Game");
 

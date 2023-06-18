@@ -6,8 +6,14 @@ public class Map {
         this.map = new int[16][26];
     }
     public void addSnake(Snake snake){
+        boolean first = true;
         for (Cell cell: snake.body) {
-            map[cell.row][cell.col] = 1;
+            if (first) {
+                map[cell.row][cell.col] = 3;
+                first = false;
+            } else {
+                map[cell.row][cell.col] = 1;
+            }
         }
         Cell apple = snake.apple;
         map[apple.row][apple.col] = 2;

@@ -76,6 +76,10 @@ public class GridPanel extends JPanel {
                         panel.setBackground(Settings.AppleColor);
                         break;
                     }
+                    case 3:{
+                        panel.setBackground(Settings.SnakeHeadColor);
+                        break;
+                    }
                 }
             }
         }

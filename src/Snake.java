@@ -8,12 +8,23 @@ public class Snake{ //implements IMoveAble {
     public Snake(){
         int headRow = Settings.ROWS-4;
         int headCol = Settings.COLS/2;
+        body.add(new Cell(headRow, headCol, CellType.SnakeHead));
+        body.add(new Cell(headRow+1, headCol, CellType.Snake));
+        body.add(new Cell(headRow+2, headCol, CellType.Snake));
+        createNewApple();
+    }
+
+    public void reset(){
+        int headRow = Settings.ROWS-4;
+        int headCol = Settings.COLS/2;
+        this.body = new ArrayList<Cell>();
         body.add(new Cell(headRow, headCol, CellType.Snake));
         body.add(new Cell(headRow+1, headCol, CellType.Snake));
         body.add(new Cell(headRow+2, headCol, CellType.Snake));
+        this.direction = UserAction.UP;
+        createNewApple();
+
     }
-
-
     public boolean move() {
         int len1 = this.body.size();
 

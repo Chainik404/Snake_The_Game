@@ -10,4 +10,5 @@ class Settings{
 
     public static final Color SnakeColor = Color.green;
     public static final Color AppleColor = Color.red;
+    public static final Color SnakeHeadColor = Color.ORANGE;
 }

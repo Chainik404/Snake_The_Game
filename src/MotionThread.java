@@ -28,7 +28,6 @@ public class MotionThread implements Runnable {
                 }
                 time++;
                 //time manage
-                System.out.println(Context.isGame());
                 if(Context.isGame() && time%this.SpeedTime == 0){
                     Context.snakeMove();
 //                    this.isGame = Context.isGame();
