@@ -1,7 +1,4 @@
-import javax.swing.*;
 import java.lang.Thread;
-import java.lang.reflect.InvocationTargetException;
-import java.util.Queue;
 
 public class MotionThread implements Runnable {
 
@@ -10,46 +7,52 @@ public class MotionThread implements Runnable {
     private long SpeedTime;
     private DataContext Context;
     private UIContext UIContext;
-    private boolean isGame;
     public MotionThread(long sleepTime,long speedTime, DataContext context, UIContext uiContext){
         this.Context = context;
         this.UIContext = uiContext;
         this.SleepTime = sleepTime;
         this.SpeedTime = speedTime;
-        this.isGame = true;
-
+//        this.Context.subscribe(Context);
+        this.Context.subscribe(UIContext);
+        this.UIContext.subscribe(Context);
     }
 
     public void run() {
         int time = 0;
-        while(isGame){
+        //add move listener;
+        while(true){
+
             synchronized (Context) {
                 if (Context.Exit) {
                     return;
                 }
                 time++;
                 //time manage
-                if(time == this.SpeedTime){
-                    this.isGame = Context.Move();
+                System.out.println(Context.isGame());
+                if(Context.isGame() && time%this.SpeedTime == 0){
+                    Context.snakeMove();
+//                    this.isGame = Context.isGame();
                     Context.updateMap();
-//                    Context.printMap();
+                    Context.printMap();
                     time=0;
                 }
             }
+            synchronized (UIContext){
+                UIContext.updateGrid();
+            }
 
-
-                try {
-                    SwingUtilities.invokeLater(new Runnable() {
-                        public void run() {
-                            UIContext.pocessAction();
-                            // Update UI components here
-                            // label.setText("Update complete");
-
-                        }
-                    });
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+//                try {
+//                    SwingUtilities.invokeLater(new Runnable() {
+//                        public void run() {
+//                            UIContext.pocessAction();
+//                            // Update UI components here
+//                            // label.setText("Update complete");
+//
+//                        }
+//                    });
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
 
             try {
                 Thread.sleep(this.SleepTime);

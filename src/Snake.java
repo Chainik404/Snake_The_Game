@@ -3,7 +3,7 @@ import java.util.ArrayList;
 
 public class Snake{ //implements IMoveAble {
     ArrayList<Cell> body = new ArrayList<>(3);
-    Direction direction = Direction.UP;
+    UserAction direction = UserAction.UP;
     Cell apple = new Cell(10,10,CellType.Apple);
     public Snake(){
         int headRow = Settings.ROWS-4;
@@ -29,38 +29,47 @@ public class Snake{ //implements IMoveAble {
         int shift_row = 0;
         int shift_col = 0;
 
-        if (this.direction == Direction.UP) {
+        if (this.direction == UserAction.UP) {
             shift_row = -1;
         }
-        if (this.direction == Direction.Down) {
+        if (this.direction == UserAction.Down) {
             shift_row = 1;
         }
-        if (this.direction == Direction.Left) {
+        if (this.direction == UserAction.Left) {
             shift_col = -1;
         }
-        if (this.direction == Direction.Right) {
+        if (this.direction == UserAction.Right) {
             shift_col = 1;
         }
 
         this.body.get(0).shift(shift_row, shift_col);
         if (checkColision()){
+            OnSnakeBlock();
             return false;
         }
+        OnSnakeMove();
+
         if (isApple) {
             Cell c_new = new Cell(this.apple.row, this.apple.col,CellType.Snake);
             this.body.add(c_new);
-            boolean ff = this.findNewApple();
-
+            OnSnakeGrow();
+            //call wvent on bogy extention
+            boolean ff = false;
             while (!ff) {
-                ff = this.findNewApple();
+                ff = this.createNewApple();
+                //is board full;
             }
+            OnAppleAdded();
+
+
         }
         return true;
     }
-    public void turn(Direction direction){
-        this.direction = direction;
+    public void turn(UserAction userAction){
+        this.direction = userAction;
+        OnSnakeTurn();
     }
-    public boolean findNewApple() {
+    public boolean createNewApple() {
 
         int cc = (int)(Math.random()*Settings.COLS);
         int rr = (int)(Math.random()*Settings.ROWS);
@@ -94,12 +103,13 @@ public class Snake{ //implements IMoveAble {
     private List<SnakeEventsListener> snakesListeners = new ArrayList<>();
 
     // Method to subscribe to event
-    public void addOnChangeListener(SnakeEventsListener listener) {
+    public void subscribe(SnakeEventsListener listener) {
         snakesListeners.add(listener);
     }
 
+
     // Method to unsubscribe from event
-    public void delOnChangeListener(SnakeEventsListener listener) {
+    public void unsubscribe(SnakeEventsListener listener) {
         snakesListeners.remove(listener);
     }
 
@@ -115,5 +125,26 @@ public class Snake{ //implements IMoveAble {
             listener.onNewApple(this);
         }
     }
+    private void OnSnakeGrow(){
+        for (var listener : snakesListeners) {
+            listener.onSnakeGrow(this);
+        }
+    }
+    private void OnSnakeTurn(){
+        for (var listener : snakesListeners) {
+            listener.onSnakeTurn(this);
+        }
+    }
+    private void OnSnakeMove(){
+        for (var listener : snakesListeners) {
+            listener.onMove(this);
+        }
+    }
+    private void OnSnakeBlock() {
+        for (var listener : snakesListeners) {
+            listener.onSnakeBlock(this);
+        }
+    }
+
     //#endregion
 }

@@ -1,10 +1,14 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class GridPanel extends JPanel {
     int rows;
     int cols;
-    public GridPanel(){
+    DataContext dataContext;
+    public GridPanel(DataContext dataContext){
+        this.dataContext = dataContext;
         this.rows = Settings.ROWS;
         this.cols = Settings.COLS;
         setLayout(new GridLayout(rows,cols));
@@ -14,6 +18,37 @@ public class GridPanel extends JPanel {
             panel.setBorder(BorderFactory.createLineBorder(Color.white));
             add(panel);
         }
+        addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                super.keyPressed(e);
+                int pressed = e.getKeyCode();
+                UserAction userAction;
+                switch (pressed){
+                    case(37): {
+                        userAction = UserAction.Left;
+                        break;
+                    }
+                    case (38):{
+                        userAction = UserAction.UP;
+                        break;
+                    }
+                    case (39):{
+                        userAction = UserAction.Right;
+                        break;
+                    }
+                    case (40):{
+                        userAction = UserAction.Down;
+                        break;
+                    }
+                    default: userAction =null;
+                }
+//                OnUserAction();
+                synchronized (dataContext){
+                    dataContext.addMoveDirection(userAction);
+                }
+            }
+        });
     }
     public void vipe(){
         for (Component c: getComponents()) {
@@ -44,5 +79,8 @@ public class GridPanel extends JPanel {
                 }
             }
         }
+    }
+    public void Focus(){
+        grabFocus();
     }
 }
