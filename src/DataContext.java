@@ -19,6 +19,9 @@ public class DataContext implements SnakeEventsListener,UserEventListener {
     public UserAction getSnakeOpositeDirection(){
         return this.Snake.getOpositeDirection();
     }
+    public void setSnakeOpositeDirection(UserAction direction){
+        this.Snake.setOpositeDirection(direction);
+    }
 
     public void setGame(boolean game) {
         isGame = game;

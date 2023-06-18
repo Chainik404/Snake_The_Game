@@ -132,6 +132,10 @@ public class Snake{ //implements IMoveAble {
         return collision;
     }
 
+    public void setOpositeDirection(UserAction opositeDirection) {
+        this.opositeDirection = opositeDirection;
+    }
+
     public UserAction getOpositeDirection() {
         return opositeDirection;
     }

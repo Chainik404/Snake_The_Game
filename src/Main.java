@@ -4,7 +4,7 @@ public class Main {
         DataContext dataContext  =new DataContext();
         UIContext uiContext = new UIContext(dataContext);
 
-        MotionThread motionThread = new MotionThread(10,5,dataContext,uiContext);
+        MotionThread motionThread = new MotionThread(10,8,dataContext,uiContext);
         motionThread.run();
 
     }
