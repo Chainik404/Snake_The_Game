@@ -27,8 +27,13 @@ public class Snake{ //implements IMoveAble {
 
     }
     public boolean move() {
+        // check collission before make move
+        if (checkColision()){
+            OnSnakeBlock();
+            return false;
+        }
+        //
         int len1 = this.body.size();
-
         boolean isApple = this.apple.same(this.body.get(0)); // len1 - 1
 
         for (int i = 0; i < len1 - 1; i++) {
@@ -53,12 +58,9 @@ public class Snake{ //implements IMoveAble {
         if (this.direction == UserAction.Right) {
             shift_col = 1;
         }
-
+        //
         this.body.get(0).shift(shift_row, shift_col);
-        if (checkColision()){
-            OnSnakeBlock();
-            return false;
-        }
+        //
         OnSnakeMove();
 
         if (isApple) {
@@ -102,13 +104,32 @@ public class Snake{ //implements IMoveAble {
         return find;
     }
     public boolean checkColision(){
-        for (int i = 1; i < body.size(); i++) {
-            Cell head = body.get(0);
-            if (this.body.get(i).same(head)){
-                return true;
+        Cell head = body.get(0);
+        var r = head.getRow();
+        var c = head.getCol();
+
+        var collision = false;
+        if (this.direction == UserAction.UP) {
+            collision = (r == 0);
+        }
+        if (this.direction == UserAction.Down) {
+            collision = (r == Settings.ROWS-1);
+        }
+        if (this.direction == UserAction.Left) {
+            collision = (c == 0);
+        }
+        if (this.direction == UserAction.Right) {
+            collision = (c == Settings.COLS-1);
+        }
+        if(!collision)
+        {
+            for (int i = 1; i < body.size(); i++) {                
+                if (this.body.get(i).same(head)){
+                    return true;
+                }
             }
         }
-        return false;
+        return collision;
     }
 
     public UserAction getOpositeDirection() {
